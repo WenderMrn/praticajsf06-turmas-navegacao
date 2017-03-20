@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+
+<f:metadata>
+	<f:event type="preRenderView" listener="#{turmasBean.init}"/>
+</f:metadata>
+<h:head>
+	<link href="resources/css/bootstrap.css" rel="stylesheet" />
+	<title>Turmas Webapp</title>
+	<style>
+		.vertical-align {
+		  display: flex;
+		  flex-direction: row;
+		}
+		
+		.vertical-align > [class^="col-"],
+		.vertical-align > [class*=" col-"] {
+		  display: flex;
+		  align-items: center;     /* Align the flex-items vertically */
+		  justify-content: center; /* Optional, to align inner flex-items
+		                              horizontally within the column  */
+		}
+	</style>
+</h:head>
+<h:body>
+		<div class="jumbotron">
+			<h1>Turmas</h1>
+			<p>Cadastro de turma e alunos</p>
+		</div>
+		<div class="container">
+		<div class="main-page">
+		<h:form id="turmas-cadastro">
+			<div class="row col-md-12">
+				<h3>Nova Turma</h3>
+			</div>
+			<div class="row col-md-12">
+				<h:messages style = "color:red;margin:8px;" id="msg-form-turmas" globalOnly="false"/>
+			</div>
+			<div class="row">
+				<div class="col-md-3 form-group">
+					<h:outputLabel for="nome" value="Nome "/>
+					<h:inputText id="nome" class="form-control" value="#{turmasBean.turma.nome}" required="true" />
+				</div>
+				<div class="col-md-3 form-group">
+					<h:outputLabel for="data" value="Data "/>
+					<h:inputText id="data" class="form-control" pt:placeholder="dd/mm/yyyy" value="#{turmasBean.turma.dataCriacao}" required="true">
+						 <f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:inputText>
+				</div>
+				<div style="padding-top: 24px;" class="col-md-3 form-group">
+					<h:commandButton class="btn btn-success" actionListener="#{turmasBean.adicionar}" value="Adicionar" />		
+				</div>
+			</div>
+		</h:form>
+		<h:form id="turmas-listagem">
+		<hr style="height:2em;"/>
+		<h:commandButton class="btn btn-info row" actionListener="#{turmasBean.listarTurmas}"
+					value="Atualizar" rendered="#{not empty turmasBean.turmas}"/>
+					
+			<h:dataTable var="turma" value="#{turmasBean.turmas}" 
+				rendered="#{not empty turmasBean.turmas}"
+				styleClass="table table-striped table-hover">
+				<h:column>
+					<f:facet name="header">ID</f:facet>
+					#{turma.id}
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Nome</f:facet>
+					<h:commandLink value="#{turma.nome}" action="#{turmasBean.selecionar(turma)}"/>
+				</h:column>
+				
+				<h:column>
+						<f:facet name="header">Data criação</f:facet>
+						<h:outputText value="#{turma.dataCriacao}">
+							<f:convertDateTime dateStyle="short" />
+						</h:outputText>
+					</h:column>
+
+				<h:column>
+					<f:facet name="header">Alunos matriculados</f:facet>
+					#{turma.size}
+				</h:column>
+				<h:column>
+					<f:facet name="header"></f:facet>
+					<h:commandButton class="btn btn-danger" value="Excluir" actionListener="#{turmasBean.excluirTurma(turma)}"/>
+				</h:column>
+
+			</h:dataTable>
+		</h:form>
+		</div>
+	</div>
+
+
+</h:body>
+</html>

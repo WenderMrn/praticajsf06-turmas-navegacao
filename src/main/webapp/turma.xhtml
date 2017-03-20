@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:pt="http://xmlns.jcp.org/jsf/passthrough">
+<f:metadata>
+	<f:viewParam name="id" value="#{turmasBean.id}"/>
+	<f:event type="preRenderView" listener="#{turmasBean.listarAlunosPorTurma}"/>
+</f:metadata>
+<h:head>
+	<link href="resources/css/bootstrap.css" rel="stylesheet" />
+	<title>Turmas Webapp</title>
+</h:head>
+<h:body>
+	#{turmasBean.unloadFlash()}
+		<div class="jumbotron">
+			<h2>Turmas</h2>
+			<p>Cadastro de turma e alunos</p>
+			<h1>#{turmasBean.turma.nome}</h1>
+		</div>
+		<div class="container">
+		<div class="main-page">
+		<h:form id="turma-cadastro">
+		<div class="row">
+			<div class="row col-md-12">
+				<h3>Novo Aluno</h3>
+			</div>
+			<div class="row">
+				<div class="col-md-4 form-group">
+					<h:outputLabel for="nome" value="Nome "/>
+					<h:inputText id="nome" class="form-control" value="#{turmasBean.aluno.nome}" required="true"/>
+				</div>
+				<div class="col-md-4 form-group">
+					<h:outputLabel for="matricula" value="Matrícula "/>
+					<h:inputText id="matricula" class="form-control" value="#{turmasBean.aluno.matricula}" required="true">
+						<f:validateLength minimum="1" maximum="9" />
+					</h:inputText>
+				</div>
+				<div style="padding-top: 24px;" class="col-md-4 form-group">
+					<h:commandButton class="btn btn-success" actionListener="#{turmasBean.adicionarAluno}" value="Adicionar"/>		
+					<h:button outcome="turmas?faces-redirect=true" class="btn btn-default" value="Voltar"/>		
+				</div>
+			</div>
+			<div class="row col-md-12">
+				<h:messages style="color:red;margin:8px;" id="msg-form-turma" globalOnly="false"/>
+			</div>
+		</div>
+		</h:form>
+		<hr style="height:2em;"/>
+		<h:form id="turma-listagem">
+		<div class="row">
+			<h:outputText rendered="#{empty turmasBean.turma.alunos}" value="Não há alunos matriculados"></h:outputText>
+		</div>
+		<h:commandButton class="btn btn-info row" actionListener="#{turmasBean.listarAlunosPorTurma}"
+					value="Atualizar" rendered="#{not empty turmasBean.turma.alunos}"/>
+					
+			<h:dataTable var="aluno" value="#{turmasBean.turma.alunos}" 
+				rendered="#{not empty turmasBean.turma.alunos}"
+				styleClass="table table-striped table-hover">
+				<h:column>
+					<f:facet name="header">ID</f:facet>
+					#{aluno.id}
+				</h:column>
+
+				<h:column>
+					<f:facet name="header">Nome</f:facet>
+					#{aluno.nome}
+				</h:column>
+				
+				<h:column>
+					<f:facet name="header">Matrícula</f:facet>
+					#{aluno.matricula}
+				</h:column>
+				<h:column>
+					<f:facet name="header"></f:facet>
+					<h:commandButton class="btn btn-danger" value="Excluir" actionListener="#{turmasBean.excluirAluno(aluno)}"/>
+				</h:column>
+			</h:dataTable>
+		</h:form>
+		</div>
+	</div>
+</h:body>
+</html>
