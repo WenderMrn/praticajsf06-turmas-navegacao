@@ -1,0 +1,15 @@
+.jumbotron{
+	background-image:url("../img/003.jpg");
+	background-size: 100% 45%;
+	background-attachment: fixed;
+	background-repeat: no-repeat;
+	text-shadow: 1px 1px 2px #080808;
+	color: #FFF;
+	box-shadow: 0px 1px 1px #888888;	
+}
+footer{
+	color: #FFF;
+    margin-top: 50px;
+    padding-top: 80px;
+    background: #777;
+}

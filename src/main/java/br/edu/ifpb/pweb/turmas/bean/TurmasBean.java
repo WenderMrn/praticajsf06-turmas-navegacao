@@ -2,6 +2,7 @@ package br.edu.ifpb.pweb.turmas.bean;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -115,8 +116,14 @@ public class TurmasBean {
 	}
 	
 	public void excluirAluno(Aluno a){
-		AlunoDAO aDao = null;
-		aDao = new AlunoDAO();
+		
+		TurmaDAO tDao = new TurmaDAO();
+		tDao.beginTransaction();
+		this.turma.getAlunos().remove(a);
+		tDao.update(this.turma);
+		tDao.commit();
+		
+		AlunoDAO aDao = new AlunoDAO();
 		aDao.beginTransaction();
 		aDao.delete(a);
 		aDao.commit();
@@ -146,7 +153,8 @@ public class TurmasBean {
 	public String selecionar(Turma t){
 		this.turma = t;
 		loadFlash();
-		//return "turma?faces-redirect=true&id="+t.getId();
-		return "turma?faces-redirect=true";
+		Random r = new Random();;
+		String resultado =  "turma?faces-redirect=true";
+		return (r.nextInt(2)+1)% 2 == 0?resultado:resultado+"&id="+t.getId();
 	}
 }

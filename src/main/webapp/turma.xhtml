@@ -12,6 +12,7 @@
 </f:metadata>
 <h:head>
 	<link href="resources/css/bootstrap.css" rel="stylesheet" />
+	<link href="resources/css/turmas.css" rel="stylesheet" />
 	<title>Turmas Webapp</title>
 </h:head>
 <h:body>
@@ -36,7 +37,8 @@
 				<div class="col-md-4 form-group">
 					<h:outputLabel for="matricula" value="Matrícula "/>
 					<h:inputText id="matricula" class="form-control" value="#{turmasBean.aluno.matricula}" required="true">
-						<f:validateLength minimum="1" maximum="9" />
+						<f:validateLength minimum="9" maximum="9" />
+						<f:convertNumber pattern="#0"/>
 					</h:inputText>
 				</div>
 				<div style="padding-top: 24px;" class="col-md-4 form-group">
@@ -82,5 +84,8 @@
 		</h:form>
 		</div>
 	</div>
+	<footer class="container-fluid" style="color:#FFF;margin-top:50px;padding-top:80px;background:#777">
+  		<p>PWEBII ® IFPB </p>
+	</footer>
 </h:body>
 </html>
